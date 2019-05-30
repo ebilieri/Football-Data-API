@@ -1,10 +1,10 @@
-﻿@model IEnumerable<FootballAPI.Models.Table>
+﻿@model FootballAPI.Models.Competition
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>@Html.Raw(ViewBag.Campeonato) - @Html.Raw(ViewBag.CampeonatoId)</h2>
+<h2>@Html.Raw(Model.Name) - @Html.Raw(Model.Id)</h2>
 
 <div class="panel panel-success">
     <div class="panel-heading panel-head">
@@ -56,32 +56,35 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @if (Model.Tables != null)
                 {
-                    <tr>
-                        <td>
-                            @if (item.Team.CrestUrl != null)
-                            {
-                                <img src="@Url.Content(item.Team.CrestUrl.ToString())" alt="Image" width="45" />
-                            }
-                            @Html.DisplayFor(modelItem => item.Team.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Position)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Won)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Draw)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Lost)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Points)
-                        </td>
-                    </tr>
+                    @foreach (var item in Model.Tables)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Team.CrestUrl != null)
+                                {
+                                    <img src="@Url.Content(item.Team.CrestUrl.ToString())" alt="Image" width="45" />
+                                }
+                                @Html.DisplayFor(modelItem => item.Team.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Position)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Won)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Draw)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Points)
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

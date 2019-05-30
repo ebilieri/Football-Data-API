@@ -8,9 +8,7 @@ namespace FootballAPI.Services.Interfaces
 {
     public interface IFootballService
     {        
-        Task<Football> GetFootball(string IdCompeticao, string uriEndpoint, string token);
-        Standing GetStanding(Football football);
-        List<Table> GetTableTeams(Football football);
-
+        Task<Football> GetFootball(string idCompeticao);                
+        Task<Competition> GetTableTeams(string idCompeticao);
     }
 }

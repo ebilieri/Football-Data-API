@@ -19,7 +19,7 @@ namespace FootballAPI.Tests
         [Fact]
         public async void GetValueCompetitionID2021()
         {            
-            var footbal = await _footballService.GetFootball("2021", uriEndpoint, token);
+            var footbal = await _footballService.GetFootball("2021");
 
             Assert.Equal(2021, footbal.Competition.Id);
         }
@@ -27,11 +27,11 @@ namespace FootballAPI.Tests
         [Fact]
         public async void GetCountTeamsCompetitionID2021()
         {
-            var footbal = await _footballService.GetFootball("2021", uriEndpoint, token);
-            var listTeams = _footballService.GetTableTeams(footbal);
+            //var footbal = await _footballService.GetFootball("2021");
+            var listTeams = await _footballService.GetTableTeams("2021");
             int valorEsperado = 20;
 
-            Assert.Equal(valorEsperado, listTeams.Count);
+            Assert.Equal(valorEsperado, listTeams.Tables.Count);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using FootballAPI.Models;
+using FootballAPI.Services.Helpers;
 using FootballAPI.Services.Interfaces;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +10,38 @@ using System.Threading.Tasks;
 namespace FootballAPI.Services
 {
     public class FootballService : IFootballService
-    {                     
-        public async Task<Football> GetFootball(string IdCompeticao , string uriEndpoint, string token)
+    {
+        private Standing GetStanding(Football football)
         {
+            var standing = (from tab in football.Standings
+                            where tab.Type == "TOTAL"
+                            select tab).FirstOrDefault();
+
+            return standing;
+        }
+
+        private string GetUriEndpoint(string idCompeticao)
+        {
+            if (!string.IsNullOrWhiteSpace(idCompeticao))
+                return string.Format(ConfigHelper.CompetitionsStandings(), idCompeticao);
+            else
+                return ConfigHelper.DefaultCompetition();
+        }
+       
+        private List<Table> GetTableTeams(Football football)
+        {
+            return GetStanding(football).Table;
+        }
+
+
+        public async Task<Football> GetFootball(string idCompeticao)
+        {            
+            var token = ConfigHelper.GetToken();
+            var uriEndpoint = GetUriEndpoint(idCompeticao);
+
             Football football = null;
             using (var client = new HttpClient())
-            {                
+            {
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Add("X-Auth-Token", token);
 
@@ -34,20 +60,20 @@ namespace FootballAPI.Services
             }
 
             return football;
-        }        
-
-        public Standing GetStanding(Football football)
-        {
-            var standing = (from tab in football.Standings
-                            where tab.Type == "TOTAL"
-                            select tab).FirstOrDefault();
-
-            return standing;
         }
 
-        public List<Table> GetTableTeams(Football football)
+        public async Task<Competition> GetTableTeams(string idCompeticao)
         {
-            return GetStanding(football).Table;
+            Competition competition = new Competition();
+            var football = await GetFootball(idCompeticao);
+
+            if (football != null)
+            {
+                football.Competition.Tables = GetTableTeams(football);
+                competition = football.Competition;
+            }
+
+            return competition;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace FootballAPI.Models
 {
@@ -22,5 +23,7 @@ namespace FootballAPI.Models
 
         [JsonProperty("lastUpdated")]
         public DateTimeOffset LastUpdated { get; set; }
+
+        public List<Table> Tables { get; set; }
     }
 }
