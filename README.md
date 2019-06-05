@@ -2,6 +2,9 @@
 Aplicação que consulta os dados dos campeonatos de futeboll através da API https://www.football-data.org/
 
 Exemple implementação
+
+***************************************
+
 public async Task<Football> GetFootball(string idCompeticao)
 {            
     var token = ConfigHelper.GetToken();
@@ -26,6 +29,7 @@ public async Task<Football> GetFootball(string idCompeticao)
             }
         }
     }
-    return football;
+    return football;    
 }
-****************
+
+***************************************
